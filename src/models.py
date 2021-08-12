@@ -10,49 +10,51 @@ Base = declarative_base()
 
 class User(Base):
     __tablename__ = 'user'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
+   
     id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
-    favorite_id = Column(Integer, ForeignKey("favorite.id"))
+    email = Column(String(250), nullable=False)
+    password = Column(String(250), nullable=False)
+    favorite = relationship("Favorite")
 
 class Favorite(Base):
     __tablename__ = 'favorite'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
+    
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
-    user = relationship("User")
+    user_id = Column(Integer, ForeignKey('user.id'))
+    character_id = Column(Integer, ForeignKey('character.id'))
+    planet_id = Column(Integer, ForeignKey('planet.id'))
       
 
-class Characters(Base):
-    __tablename__='characters'
+class Character(Base):
+    __tablename__='character'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable= False)
-    birthday = Column(String(250), nullable = False)
-    gender = Column(String(250), nullable = False)
-    favorite_id = Column(Integer, ForeignKey('Favorite.id'))
-    favorite= relationship("Favorite")
+    name = Column(String(250), nullable=False)
+    height = Column(Integer, nullable=False)
+    mass = Column(Integer, nullable=False)
+    hair_color = Column(String(30))
+    skin_color = Column(String(30))
+    eye_color = Column(String(30))
+    birth_year = Column(String(250), nullable=False)
+    gender = Column(String(30), nullable=False)
+    favorite = relationship("Favorite")
 
-class Planets(Base):
-    __tablename__='planets'
+class Planet(Base):
+    __tablename__='planet'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable= False)
-    populations= Column(String(250), nullable= False)
-    diameter= Column(String(250), nullable= False)
-    favorite_id = Column(Integer, ForeignKey('Favorite.id'))
-    favorite= relationship("Favorite")
-    
+    name = Column(String(250), nullable=False)
+    diameter = Column(Integer)
+    rotation_period = Column(Integer)
+    orbital_period = Column(Integer)
+    gravity = Column(String(250))
+    population = Column(Integer, nullable=False)
+    climate = Column(String(250))
+    terrain = Column(String(250), nullable=False)
+    surface_water = Column(Integer)  
+    favorite = relationship("Favorite")
 
-
-
-   
-    
-    
-
- 
 
 ## Draw from SQLAlchemy base
 render_er(Base, 'diagram.png')
